@@ -26,7 +26,7 @@ public class Protein {
 
     public Protein(final MRNA mrna) {
         final Queue<String> codons = new LinkedList<>();
-        for (Iterator<MRNA.Base> i = mrna.seq.iterator(); i.hasNext(); ) {
+        for (final Iterator<MRNA.Base> i = mrna.seq.iterator(); i.hasNext(); ) {
             final MRNA.Base mrnaBase1, mrnaBase2, mrnaBase3;
             mrnaBase1 = i.next();
             if (!i.hasNext()) break;
