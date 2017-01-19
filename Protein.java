@@ -24,6 +24,35 @@ public class Protein {
     public static final Map<String, AminoAcid> CODON_AMINO_ACID_MAPPINGS;
     final Stream<AminoAcid> seq;
 
+    public Protein(final MRNA mrna) {
+        final Queue<String> codons = new LinkedList<>();
+        for (Iterator<MRNA.Base> i = mrna.seq.iterator(); i.hasNext(); ) {
+            final MRNA.Base mrnaBase1, mrnaBase2, mrnaBase3;
+            mrnaBase1 = i.next();
+            if (!i.hasNext()) break;
+            mrnaBase2 = i.next();
+            if (!i.hasNext()) break;
+            mrnaBase3 = i.next();
+            codons.add(mrnaBase1 + " " + mrnaBase2 + " " + mrnaBase3);
+        }
+
+        seq = codons.stream().map(CODON_AMINO_ACID_MAPPINGS::get);
+    }
+
+    public enum AminoAcid {
+        Glycine, Alanine, Valine, Leucine, Isoleucine, Proline, Phenylalanine, Tyrosine, Tryptophan, Serine, Threonine,
+        Cysteine, Methionine, Asparagine, Glutamine, Lysine, Arginine, Histidine, Aspartate, Glutamate
+    }
+
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        seq.forEach(i -> {
+            builder.append(i);
+            builder.append(' ');
+        });
+        return builder.toString();
+    }
+
     static {
         final HashMap<String, AminoAcid> codonPairings = new HashMap<>();
         codonPairings.put("Guanine Guanine Uracil", AminoAcid.Glycine);
@@ -88,34 +117,5 @@ public class Protein {
         codonPairings.put("Guanine Adenine Adenine", AminoAcid.Glutamate);
         codonPairings.put("Guanine Adenine Guanine", AminoAcid.Glutamate);
         CODON_AMINO_ACID_MAPPINGS = Collections.unmodifiableMap(codonPairings);
-    }
-
-    public Protein(final MRNA mrna) {
-        final Queue<String> codons = new LinkedList<>();
-        for (Iterator<MRNA.Base> i = mrna.seq.iterator(); i.hasNext(); ) {
-            final MRNA.Base mrnaBase1, mrnaBase2, mrnaBase3;
-            mrnaBase1 = i.next();
-            if (!i.hasNext()) break;
-            mrnaBase2 = i.next();
-            if (!i.hasNext()) break;
-            mrnaBase3 = i.next();
-            codons.add(mrnaBase1 + " " + mrnaBase2 + " " + mrnaBase3);
-        }
-
-        seq = codons.stream().map(CODON_AMINO_ACID_MAPPINGS::get);
-    }
-
-    public enum AminoAcid {
-        Glycine, Alanine, Valine, Leucine, Isoleucine, Proline, Phenylalanine, Tyrosine, Tryptophan, Serine, Threonine,
-        Cysteine, Methionine, Asparagine, Glutamine, Lysine, Arginine, Histidine, Aspartate, Glutamate
-    }
-
-    public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        seq.forEach(i -> {
-            builder.append(i);
-            builder.append(' ');
-        });
-        return builder.toString();
     }
 }
