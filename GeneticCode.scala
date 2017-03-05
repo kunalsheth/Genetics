@@ -31,28 +31,19 @@ object GeneticCode {
   def invert[A, B](map: Map[A, B]): Map[B, A] = map.map(_.swap)
 
   case class DNA(code: Seq[DnaBase]) {
-
     def flipSense(): DNA = GeneticCode flipSense this
-
     def transcribe(): MRNA = this
-
     override def toString: String = "DNA: " + code.toList.toString
   }
 
   case class MRNA(code: Seq[RnaBase]) {
-
     def unTranscribe(): DNA = this
-
     def translate(): Protien = this
-
     override def toString: String = "MRNA: " + code.toList.toString
   }
 
   case class Protien(code: Seq[AminoAcid]) {
-
     def unTranslate(): MRNA = this
-
     override def toString: String = "Protien: " + code.toList.toString
   }
-
 }
