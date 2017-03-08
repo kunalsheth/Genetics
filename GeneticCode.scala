@@ -12,7 +12,7 @@ object GeneticCode {
 
   implicit def unTranscribe(mrna: MRNA): DNA = DNA(mrna.code map invert(transcription))
 
-  implicit def translate(mrna: MRNA): Protien = Protien(
+  implicit def translate(mrna: MRNA): Protein = Protein(
     mrna.code
       grouped 3
       filter (_.length == 3)
@@ -21,8 +21,8 @@ object GeneticCode {
       toSeq
   )
 
-  implicit def unTranslate(protien: Protien): MRNA = MRNA(
-    protien.code
+  implicit def unTranslate(protein: Protein): MRNA = MRNA(
+    protein.code
       map invert(translation)
       filter (_ != null)
       flatMap (t => List(t._1, t._2, t._3))
@@ -38,12 +38,12 @@ object GeneticCode {
 
   case class MRNA(code: Seq[RnaBase]) {
     def unTranscribe(): DNA = this
-    def translate(): Protien = this
+    def translate(): Protein = this
     override def toString: String = "MRNA: " + code.toList.toString
   }
 
-  case class Protien(code: Seq[AminoAcid]) {
+  case class Protein(code: Seq[AminoAcid]) {
     def unTranslate(): MRNA = this
-    override def toString: String = "Protien: " + code.toList.toString
+    override def toString: String = "Protein: " + code.toList.toString
   }
 }
